@@ -14,7 +14,7 @@ function init() {
 }
 
 // Add a new tile to a random empty cell
-// Increased difficulty: now there's only a 40% chance for a 2 and 60% chance for a 4.
+// Increased difficulty: only a 40% chance for a 2 and 60% chance for a 4.
 function addNewTile() {
   let emptyCells = [];
   for (let i = 0; i < 4; i++) {
