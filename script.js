@@ -2,6 +2,13 @@
 let grid = Array.from({ length: 4 }, () => Array(4).fill(0));
 let score = 0;
 
+// For swipe detection
+let startX = 0,
+  startY = 0,
+  endX = 0,
+  endY = 0;
+const swipeThreshold = 50; // Minimum pixels to qualify as a swipe
+
 // Initialize or reset the game
 function init() {
   score = 0;
@@ -14,7 +21,7 @@ function init() {
 }
 
 // Add a new tile to a random empty cell
-// Increased difficulty: only a 40% chance for a 2 and 60% chance for a 4.
+// Increased difficulty: 40% chance for a 2, 60% chance for a 4.
 function addNewTile() {
   let emptyCells = [];
   for (let i = 0; i < 4; i++) {
@@ -168,15 +175,10 @@ function hideGameOver() {
   document.getElementById("gameOverOverlay").style.display = "none";
 }
 
-// Listen for arrow key events to control the game
-document.addEventListener("keydown", (event) => {
-  handleMove(event.key);
-});
-
-// Handle move based on key or gesture input
-function handleMove(key) {
+// Handle move input (from keyboard or gesture)
+function handleMove(direction) {
   let moved = false;
-  switch (key) {
+  switch (direction) {
     case "ArrowLeft":
       moved = moveLeft();
       break;
@@ -200,36 +202,38 @@ function handleMove(key) {
   }
 }
 
-/* --- Gesture Detection for Mobile --- */
-let touchstartX = 0;
-let touchstartY = 0;
-let touchendX = 0;
-let touchendY = 0;
-const threshold = 50; // Minimum distance in pixels to consider a swipe
+// Keyboard controls
+document.addEventListener("keydown", (event) => {
+  handleMove(event.key);
+});
 
-document.addEventListener(
-  "touchstart",
-  (e) => {
-    touchstartX = e.changedTouches[0].screenX;
-    touchstartY = e.changedTouches[0].screenY;
-  },
-  false
-);
+/* --- Mobile Gesture Detection using both Pointer and Touch Events --- */
+function onStart(e) {
+  // Use pointer or touch events to get start coordinates
+  if (e.type === "pointerdown") {
+    startX = e.clientX;
+    startY = e.clientY;
+  } else if (e.type === "touchstart") {
+    startX = e.changedTouches[0].clientX;
+    startY = e.changedTouches[0].clientY;
+  }
+}
 
-document.addEventListener(
-  "touchend",
-  (e) => {
-    touchendX = e.changedTouches[0].screenX;
-    touchendY = e.changedTouches[0].screenY;
-    handleGesture();
-  },
-  false
-);
+function onEnd(e) {
+  if (e.type === "pointerup") {
+    endX = e.clientX;
+    endY = e.clientY;
+  } else if (e.type === "touchend") {
+    endX = e.changedTouches[0].clientX;
+    endY = e.changedTouches[0].clientY;
+  }
+  processSwipe();
+}
 
-function handleGesture() {
-  let dx = touchendX - touchstartX;
-  let dy = touchendY - touchstartY;
-  if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return; // Not a swipe
+function processSwipe() {
+  const dx = endX - startX;
+  const dy = endY - startY;
+  if (Math.abs(dx) < swipeThreshold && Math.abs(dy) < swipeThreshold) return;
   if (Math.abs(dx) > Math.abs(dy)) {
     // Horizontal swipe
     if (dx > 0) {
@@ -246,6 +250,12 @@ function handleGesture() {
     }
   }
 }
+
+// Add pointer and touch event listeners for swipe gestures
+document.addEventListener("pointerdown", onStart);
+document.addEventListener("pointerup", onEnd);
+document.addEventListener("touchstart", onStart);
+document.addEventListener("touchend", onEnd);
 
 // Bind retry buttons (both header and overlay) to reset the game
 document.getElementById("retryBtnHeader").addEventListener("click", init);
