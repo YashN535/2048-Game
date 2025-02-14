@@ -3,11 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <title>2048 Game</title>
+    <!-- Import Google Fonts for a modern look -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="game-container" id="gameContainer">
-      <!-- Tiles will be generated dynamically -->
+    <!-- Header with score and always-visible Retry button -->
+    <div class="header">
+      <div class="score-container">Score: <span id="score">0</span></div>
+      <button id="retryBtnHeader" class="retry-btn">Retry</button>
+    </div>
+    <div class="game-wrapper">
+      <div class="game-container" id="gameContainer"></div>
+      <div id="gameOverOverlay" class="game-over-overlay">
+        <div class="game-over-message">
+          <h1>Game Over</h1>
+          <button id="retryBtnOverlay" class="retry-btn">Retry</button>
+        </div>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
