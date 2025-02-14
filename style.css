@@ -175,3 +175,6 @@
     }
   }
   
+  html, body {
+    overscroll-behavior: none;  /* Tells the browser not to show bounce or refresh behavior */
+  }

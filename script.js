@@ -252,10 +252,18 @@ document.addEventListener("touchstart", onStart, { passive: true });
 document.addEventListener("touchend", onEnd, { passive: true });
 
 // Prevent default touchmove behavior (e.g. pull-to-refresh)
-document.addEventListener(
+// document.addEventListener(
+//   "touchmove",
+//   function (e) {
+//     e.preventDefault();
+//   },
+//   { passive: false }
+// );
+
+document.getElementById("gameContainer").addEventListener(
   "touchmove",
   function (e) {
-    e.preventDefault();
+    e.preventDefault(); // This prevents the default pull-to-refresh inside your game area
   },
   { passive: false }
 );
