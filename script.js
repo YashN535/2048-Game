@@ -144,19 +144,16 @@ function moveDown() {
 
 // Check if there are no moves left (game over)
 function checkGameOver() {
-  // If there is an empty cell, game is not over
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       if (grid[i][j] === 0) return false;
     }
   }
-  // Check horizontal possibilities
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 3; j++) {
       if (grid[i][j] === grid[i][j + 1]) return false;
     }
   }
-  // Check vertical possibilities
   for (let j = 0; j < 4; j++) {
     for (let i = 0; i < 3; i++) {
       if (grid[i][j] === grid[i + 1][j]) return false;
@@ -207,9 +204,8 @@ document.addEventListener("keydown", (event) => {
   handleMove(event.key);
 });
 
-/* --- Mobile Gesture Detection using both Pointer and Touch Events --- */
+/* --- Mobile Gesture Detection using Pointer and Touch Events --- */
 function onStart(e) {
-  // Use pointer or touch events to get start coordinates
   if (e.type === "pointerdown") {
     startX = e.clientX;
     startY = e.clientY;
@@ -235,14 +231,12 @@ function processSwipe() {
   const dy = endY - startY;
   if (Math.abs(dx) < swipeThreshold && Math.abs(dy) < swipeThreshold) return;
   if (Math.abs(dx) > Math.abs(dy)) {
-    // Horizontal swipe
     if (dx > 0) {
       handleMove("ArrowRight");
     } else {
       handleMove("ArrowLeft");
     }
   } else {
-    // Vertical swipe
     if (dy > 0) {
       handleMove("ArrowDown");
     } else {
@@ -254,8 +248,17 @@ function processSwipe() {
 // Add pointer and touch event listeners for swipe gestures
 document.addEventListener("pointerdown", onStart);
 document.addEventListener("pointerup", onEnd);
-document.addEventListener("touchstart", onStart);
-document.addEventListener("touchend", onEnd);
+document.addEventListener("touchstart", onStart, { passive: true });
+document.addEventListener("touchend", onEnd, { passive: true });
+
+// Prevent default touchmove behavior (e.g. pull-to-refresh)
+document.addEventListener(
+  "touchmove",
+  function (e) {
+    e.preventDefault();
+  },
+  { passive: false }
+);
 
 // Bind retry buttons (both header and overlay) to reset the game
 document.getElementById("retryBtnHeader").addEventListener("click", init);
