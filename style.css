@@ -1,0 +1,57 @@
+/* styles.css */
+body {
+    margin: 0;
+    background: #faf8ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .game-container {
+    width: 500px;
+    height: 500px;
+    background: #bbada0;
+    border-radius: 6px;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  .tile {
+    background: #cdc1b4;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    font-weight: bold;
+    color: #776e65;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  
+  /* Dynamic styling based on tile value */
+  .tile-2 { background: #eee4da; }
+  .tile-4 { background: #ede0c8; }
+  .tile-8 { background: #f2b179; color: #f9f6f2; }
+  .tile-16 { background: #f59563; color: #f9f6f2; }
+  .tile-32 { background: #f67c5f; color: #f9f6f2; }
+  .tile-64 { background: #f65e3b; color: #f9f6f2; }
+  .tile-128 { background: #edcf72; color: #f9f6f2; }
+  .tile-256 { background: #edcc61; color: #f9f6f2; }
+  .tile-512 { background: #edc850; color: #f9f6f2; }
+  .tile-1024 { background: #edc53f; color: #f9f6f2; }
+  .tile-2048 { background: #edc22e; color: #f9f6f2; }
+  
+  /* New tile animation */
+  .new-tile {
+    animation: pop 0.2s ease;
+  }
+  @keyframes pop {
+    from { transform: scale(0.1); }
+    to { transform: scale(1); }
+  }
+  
