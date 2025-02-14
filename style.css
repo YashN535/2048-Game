@@ -50,7 +50,7 @@
     transform: scale(1.05);
   }
   
-  /* Game wrapper: uses relative units for mobile responsiveness */
+  /* Game wrapper */
   .game-wrapper {
     position: relative;
     width: 90vw;

@@ -170,8 +170,13 @@ function hideGameOver() {
 
 // Listen for arrow key events to control the game
 document.addEventListener("keydown", (event) => {
+  handleMove(event.key);
+});
+
+// Handle move based on key or gesture input
+function handleMove(key) {
   let moved = false;
-  switch (event.key) {
+  switch (key) {
     case "ArrowLeft":
       moved = moveLeft();
       break;
@@ -193,7 +198,54 @@ document.addEventListener("keydown", (event) => {
       showGameOver();
     }
   }
-});
+}
+
+/* --- Gesture Detection for Mobile --- */
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
+const threshold = 50; // Minimum distance in pixels to consider a swipe
+
+document.addEventListener(
+  "touchstart",
+  (e) => {
+    touchstartX = e.changedTouches[0].screenX;
+    touchstartY = e.changedTouches[0].screenY;
+  },
+  false
+);
+
+document.addEventListener(
+  "touchend",
+  (e) => {
+    touchendX = e.changedTouches[0].screenX;
+    touchendY = e.changedTouches[0].screenY;
+    handleGesture();
+  },
+  false
+);
+
+function handleGesture() {
+  let dx = touchendX - touchstartX;
+  let dy = touchendY - touchstartY;
+  if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return; // Not a swipe
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Horizontal swipe
+    if (dx > 0) {
+      handleMove("ArrowRight");
+    } else {
+      handleMove("ArrowLeft");
+    }
+  } else {
+    // Vertical swipe
+    if (dy > 0) {
+      handleMove("ArrowDown");
+    } else {
+      handleMove("ArrowUp");
+    }
+  }
+}
 
 // Bind retry buttons (both header and overlay) to reset the game
 document.getElementById("retryBtnHeader").addEventListener("click", init);
