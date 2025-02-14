@@ -251,15 +251,6 @@ document.addEventListener("pointerup", onEnd);
 document.addEventListener("touchstart", onStart, { passive: true });
 document.addEventListener("touchend", onEnd, { passive: true });
 
-// Prevent default touchmove behavior (e.g. pull-to-refresh)
-// document.addEventListener(
-//   "touchmove",
-//   function (e) {
-//     e.preventDefault();
-//   },
-//   { passive: false }
-// );
-
 document.getElementById("gameContainer").addEventListener(
   "touchmove",
   function (e) {
